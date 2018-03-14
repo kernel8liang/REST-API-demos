@@ -42,7 +42,7 @@ func HttpGetRequest(strUrl string, mapParams map[string]string) (string, bool) {
 	if nil != err {
 		return err.Error(), false
 	}
-    defer response.Body.Close()
+	defer response.Body.Close()
 
 	// 解析响应内容
 	body, err := ioutil.ReadAll(response.Body)
@@ -92,7 +92,7 @@ func HttpPostRequest(strUrl string, mapParams map[string]string) (string, bool) 
 // mapParams: map类型的请求参数, key:value
 // strRequest: API路由路径
 // return: 请求结果
-func ApiKeyGet(mapParams map[string]string, strRequestPath string) string {
+func ApiKeyGet(mapParams map[string]string, strRequestPath string) (string, bool) {
 	strMethod := "GET"
 	timestamp := time.Now().UTC().Format("2006-01-02T15:04:05")
 
@@ -112,7 +112,7 @@ func ApiKeyGet(mapParams map[string]string, strRequestPath string) string {
 // mapParams: map类型的请求参数, key:value
 // strRequest: API路由路径
 // return: 请求结果
-func ApiKeyPost(mapParams map[string]string, strRequestPath string) string {
+func ApiKeyPost(mapParams map[string]string, strRequestPath string) (string, bool) {
 	strMethod := "POST"
 	timestamp := time.Now().UTC().Format("2006-01-02T15:04:05")
 

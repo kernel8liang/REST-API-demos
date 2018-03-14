@@ -20,7 +20,7 @@ import (
 // strPeriod: K线类型, 1min, 5min, 15min......
 // nSize: 获取数量, [1-2000]
 // return: KLineReturn 对象
-func GetKLine(strSymbol, strPeriod string, nSize int) models.KLineReturn, bool {
+func GetKLine(strSymbol, strPeriod string, nSize int) (models.KLineReturn, bool) {
 	kLineReturn := models.KLineReturn{}
 
 	mapParams := make(map[string]string)
@@ -43,7 +43,7 @@ func GetKLine(strSymbol, strPeriod string, nSize int) models.KLineReturn, bool {
 // 获取聚合行情
 // strSymbol: 交易对, btcusdt, bccbtc......
 // return: TickReturn对象
-func GetTicker(strSymbol string) models.TickerReturn, bool {
+func GetTicker(strSymbol string) (models.TickerReturn, bool) {
 	tickerReturn := models.TickerReturn{}
 
 	mapParams := make(map[string]string)
@@ -65,7 +65,7 @@ func GetTicker(strSymbol string) models.TickerReturn, bool {
 // strSymbol: 交易对, btcusdt, bccbtc......
 // strType: Depth类型, step0、step1......stpe5 (合并深度0-5, 0时不合并)
 // return: MarketDepthReturn对象
-func GetMarketDepth(strSymbol, strType string) models.MarketDepthReturn, bool {
+func GetMarketDepth(strSymbol, strType string) (models.MarketDepthReturn, bool) {
 	marketDepthReturn := models.MarketDepthReturn{}
 
 	mapParams := make(map[string]string)
@@ -87,7 +87,7 @@ func GetMarketDepth(strSymbol, strType string) models.MarketDepthReturn, bool {
 // 获取交易细节信息
 // strSymbol: 交易对, btcusdt, bccbtc......
 // return: TradeDetailReturn对象
-func GetTradeDetail(strSymbol string) models.TradeDetailReturn, bool {
+func GetTradeDetail(strSymbol string) (models.TradeDetailReturn, bool) {
 	tradeDetailReturn := models.TradeDetailReturn{}
 
 	mapParams := make(map[string]string)
@@ -109,7 +109,7 @@ func GetTradeDetail(strSymbol string) models.TradeDetailReturn, bool {
 // strSymbol: 交易对, btcusdt, bccbtc......
 // nSize: 获取交易记录的数量, 范围1-2000
 // return: TradeReturn对象
-func GetTrade(strSymbol string, nSize int) models.TradeReturn, bool {
+func GetTrade(strSymbol string, nSize int) (models.TradeReturn, bool) {
 	tradeReturn := models.TradeReturn{}
 
 	mapParams := make(map[string]string)
@@ -131,7 +131,7 @@ func GetTrade(strSymbol string, nSize int) models.TradeReturn, bool {
 // 获取Market Detail 24小时成交量数据
 // strSymbol: 交易对, btcusdt, bccbtc......
 // return: MarketDetailReturn对象
-func GetMarketDetail(strSymbol string) models.MarketDetailRetur, bool {
+func GetMarketDetail(strSymbol string) (models.MarketDetailReturn, bool) {
 	marketDetailReturn := models.MarketDetailReturn{}
 
 	mapParams := make(map[string]string)
@@ -154,7 +154,7 @@ func GetMarketDetail(strSymbol string) models.MarketDetailRetur, bool {
 
 // 查询系统支持的所有交易及精度
 // return: SymbolsReturn对象
-func GetSymbols() models.SymbolsReturn, bool {
+func GetSymbols() (models.SymbolsReturn, bool) {
 	symbolsReturn := models.SymbolsReturn{}
 
 	strRequestUrl := "/v1/common/symbols"
@@ -171,7 +171,7 @@ func GetSymbols() models.SymbolsReturn, bool {
 
 // 查询系统支持的所有币种
 // return: CurrencysReturn对象
-func GetCurrencys() models.CurrencysReturn, bool {
+func GetCurrencys() (models.CurrencysReturn, bool) {
 	currencysReturn := models.CurrencysReturn{}
 
 	strRequestUrl := "/v1/common/currencys"
@@ -188,7 +188,7 @@ func GetCurrencys() models.CurrencysReturn, bool {
 
 // 查询系统当前时间戳
 // return: TimestampReturn对象
-func GetTimestamp() models.TimestampReturn, bool {
+func GetTimestamp() (models.TimestampReturn, bool) {
 	timestampReturn := models.TimestampReturn{}
 
 	strRequest := "/v1/common/timestamp"
@@ -208,7 +208,7 @@ func GetTimestamp() models.TimestampReturn, bool {
 
 // 查询当前用户的所有账户, 根据包含的私钥查询
 // return: AccountsReturn对象
-func GetAccounts() models.AccountsReturn, bool {
+func GetAccounts() (models.AccountsReturn, bool) {
 	accountsReturn := models.AccountsReturn{}
 
 	strRequest := "/v1/account/accounts"
@@ -224,7 +224,7 @@ func GetAccounts() models.AccountsReturn, bool {
 // 根据账户ID查询账户余额
 // nAccountID: 账户ID, 不知道的话可以通过GetAccounts()获取, 可以只现货账户, C2C账户, 期货账户
 // return: BalanceReturn对象
-func GetAccountBalance(strAccountID string) models.BalanceReturn, bool {
+func GetAccountBalance(strAccountID string) (models.BalanceReturn, bool) {
 	balanceReturn := models.BalanceReturn{}
 
 	strRequest := fmt.Sprintf("/v1/account/accounts/%s/balance", strAccountID)
@@ -243,7 +243,7 @@ func GetAccountBalance(strAccountID string) models.BalanceReturn, bool {
 // 下单
 // placeRequestParams: 下单信息
 // return: PlaceReturn对象
-func Place(placeRequestParams models.PlaceRequestParams) models.PlaceReturn, bool {
+func Place(placeRequestParams models.PlaceRequestParams) (models.PlaceReturn, bool) {
 	placeReturn := models.PlaceReturn{}
 
 	mapParams := make(map[string]string)
@@ -271,12 +271,15 @@ func Place(placeRequestParams models.PlaceRequestParams) models.PlaceReturn, boo
 // 申请撤销一个订单请求
 // strOrderID: 订单ID
 // return: PlaceReturn对象
-func SubmitCancel(strOrderID string) models.PlaceReturn {
+func SubmitCancel(strOrderID string) (models.PlaceReturn, bool) {
 	placeReturn := models.PlaceReturn{}
 
 	strRequest := fmt.Sprintf("/v1/order/orders/%s/submitcancel", strOrderID)
-	jsonPlaceReturn := untils.ApiKeyPost(make(map[string]string), strRequest)
+	jsonPlaceReturn, ok := untils.ApiKeyPost(make(map[string]string), strRequest)
+    if !ok {
+	    return placeReturn, ok
+    }
 	json.Unmarshal([]byte(jsonPlaceReturn), &placeReturn)
 
-	return placeReturn
+	return placeReturn, ok
 }
